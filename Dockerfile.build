@@ -2,5 +2,26 @@ FROM ubuntu:22.04
 
 RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
 
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get -y install apt-utils && \
+    apt-get -y install \
+#        apt-transport-https \
+#        ca-certificates \
+        curl
+#        software-properties-common \
+#        gnupg
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN groupadd -g 1001 docker
+# 1001 is the container GUID of docker group. Maybe later we may pick a better approach instead of hardcoding this.
+
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable" \
+    && apt-get update \
+    && apt-get -y install docker-ce \
+    && usermod -aG docker jenkins
+
 USER jenkins
 
