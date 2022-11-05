@@ -13,7 +13,11 @@ pipeline {
             steps {
                 sh 'docker pull linuxserver/ffmpeg:latest'
                 sh 'docker build -t kartaltabak/ffmpeg:`date +'%Y%m%d'` docker'
-                sh 'docker image tag kartaltabak/ffmpeg:`date +'%Y%m%d'` kartaltabak/ffmpeg:latest'
+                script {
+                    def now = new Date()
+                    today = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
+                }
+                sh 'docker image tag kartaltabak/ffmpeg:${today} kartaltabak/ffmpeg:latest'
             }
         }
         stage('Test') {
@@ -23,7 +27,7 @@ pipeline {
         }
         stage('Push') {
             steps {
-                sh 'docker push kartaltabak/ffmpeg:`date +'%Y%m%d'` '
+                sh 'docker push kartaltabak/ffmpeg:${today} '
                 sh 'docker push kartaltabak/ffmpeg:latest '
             }
         }
