@@ -11,12 +11,20 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '$MVN_CMD compile -B'
+                sh 'docker pull linuxserver/ffmpeg:latest'
+                sh 'docker build -t kartaltabak/ffmpeg:`date +'%Y%m%d'` docker'
+                sh 'docker image tag kartaltabak/ffmpeg:`date +'%Y%m%d'` kartaltabak/ffmpeg:latest'
             }
         }
         stage('Test') {
             steps {
-                sh '$MVN_CMD test -B -Dmaven.main.skip'
+                sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
+            }
+        }
+        stage('Push') {
+            steps {
+                sh 'docker push kartaltabak/ffmpeg:`date +'%Y%m%d'` '
+                sh 'docker push kartaltabak/ffmpeg:latest '
             }
         }
     }
