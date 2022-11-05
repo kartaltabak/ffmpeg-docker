@@ -16,15 +16,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t kartaltabak/ffmpeg:`date +'%Y%m%d'` docker'
+                sh 'docker build -t kartaltabak/ffmpeg:latest docker'
             }
         }
-        stage('Versioning') {
+        stage('Version') {
             steps {
                 script {
                     def now = new Date()
                     tag = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
                 }
+            }
+        }
+        stage('Tag') {
+            steps {
+                sh 'docker image kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:${tag} '
             }
         }
         stage('Test') {
