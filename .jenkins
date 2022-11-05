@@ -9,15 +9,22 @@ pipeline {
         disableConcurrentBuilds()
     }
     stages {
-        stage('Build') {
+        stage('Pull') {
             steps {
                 sh 'docker pull linuxserver/ffmpeg:latest'
+            }
+        }
+        stage('Build') {
+            steps {
                 sh 'docker build -t kartaltabak/ffmpeg:`date +'%Y%m%d'` docker'
+            }
+        }
+        stage('Versioning') {
+            steps {
                 script {
                     def now = new Date()
-                    today = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
+                    tag = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
                 }
-                sh 'docker image tag kartaltabak/ffmpeg:${today} kartaltabak/ffmpeg:latest'
             }
         }
         stage('Test') {
@@ -25,9 +32,13 @@ pipeline {
                 sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
             }
         }
-        stage('Push') {
+        stage('Push Tag') {
             steps {
-                sh 'docker push kartaltabak/ffmpeg:${today} '
+                sh 'docker push kartaltabak/ffmpeg:${tag} '
+            }
+        }
+        stage('Push Latest') {
+            steps {
                 sh 'docker push kartaltabak/ffmpeg:latest '
             }
         }
