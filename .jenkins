@@ -1,0 +1,23 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'Dockerfile.build'
+            args '--network jenkins-network'
+        }
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh '$MVN_CMD compile -B'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh '$MVN_CMD test -B -Dmaven.main.skip'
+            }
+        }
+    }
+}
