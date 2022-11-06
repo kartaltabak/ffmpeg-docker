@@ -9,7 +9,7 @@ pipeline {
     }
     triggers { cron(cron_string) }
     stages {
-        stage('Pull') {
+        stage('Build & Push') {
             steps {
                 script {
                     sh 'docker pull linuxserver/ffmpeg:latest'
@@ -17,18 +17,11 @@ pipeline {
                         def image = docker.build("kartaltabak/ffmpeg:latest", "docker")
                         sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
                         image.push()
+
+                        sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
+                        docker.image('kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag').push()
                     }
                 }
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'docker build -t kartaltabak/ffmpeg:latest docker'
-            }
-        }
-        stage('Tag') {
-            steps {
-                sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
             }
         }
     }
