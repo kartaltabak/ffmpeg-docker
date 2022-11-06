@@ -11,7 +11,13 @@ pipeline {
     stages {
         stage('Pull') {
             steps {
-                sh 'docker pull linuxserver/ffmpeg:latest'
+                script {
+                    sh 'docker pull linuxserver/ffmpeg:latest'
+                    docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
+                        def image = docker.build("kartaltabak/ffmpeg:latest")
+                        sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
+                        image.push()
+                    }
             }
         }
         stage('Build') {
@@ -26,17 +32,11 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
             }
         }
         stage('Push') {
             steps {
-                script {
-                    docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
-                        sh 'docker push kartaltabak/ffmpeg:' + tag
-                        sh 'docker push kartaltabak/ffmpeg:latest '
-                    }
-                }
+
             }
         }
     }
