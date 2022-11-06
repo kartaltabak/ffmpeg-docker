@@ -1,6 +1,8 @@
 FROM ubuntu:22.04
 
-RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
+RUN groupadd -g 1000 docker
+
+RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 --gid docker jenkins
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -13,7 +15,6 @@ RUN apt-get update && \
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-RUN groupadd -g 1001 docker
 # 1001 is the container GUID of docker group. Maybe later we may pick a better approach instead of hardcoding this.
 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
