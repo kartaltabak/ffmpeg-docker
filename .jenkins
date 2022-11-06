@@ -1,5 +1,7 @@
 String cron_string = BRANCH_NAME == "master" ? "@daily" : ""
 
+tag = new Date().format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
+
 pipeline {
     agent any
     options {
@@ -15,14 +17,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker build -t kartaltabak/ffmpeg:latest docker'
-            }
-        }
-        stage('Version') {
-            steps {
-                script {
-                    def now = new Date()
-                    tag = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
-                }
             }
         }
         stage('Tag') {
