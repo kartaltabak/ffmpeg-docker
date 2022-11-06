@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Tag') {
             steps {
-                sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:${tag} '
+                sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
             }
         }
         stage('Test') {
@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Push Tag') {
             steps {
-                sh 'docker push kartaltabak/ffmpeg:${tag} '
+                sh 'docker push kartaltabak/ffmpeg:' + tag
             }
         }
         stage('Push Latest') {
