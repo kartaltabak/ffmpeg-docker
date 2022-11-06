@@ -31,14 +31,5 @@ pipeline {
                 sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
             }
         }
-        stage('Test') {
-            steps {
-            }
-        }
-        stage('Push') {
-            steps {
-
-            }
-        }
     }
 }
