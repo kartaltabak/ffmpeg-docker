@@ -26,5 +26,7 @@ RUN apt-get update \
 
 RUN usermod -aG docker jenkins
 
+RUN touch /var/run/docker.sock
+
 USER jenkins
 
