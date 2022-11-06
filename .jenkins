@@ -14,7 +14,7 @@ pipeline {
                 script {
                     sh 'docker pull linuxserver/ffmpeg:latest'
                     docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
-                        def image = docker.build("kartaltabak/ffmpeg:latest")
+                        def image = docker.build("kartaltabak/ffmpeg:latest", "docker")
                         sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
                         image.push()
                     }
