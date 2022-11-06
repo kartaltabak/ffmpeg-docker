@@ -30,11 +30,9 @@ pipeline {
             }
         }
         stage('Push') {
-            steps {
-                docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
-                    sh 'docker push kartaltabak/ffmpeg:' + tag
-                    sh 'docker push kartaltabak/ffmpeg:latest '
-                }
+            docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
+                sh 'docker push kartaltabak/ffmpeg:' + tag
+                sh 'docker push kartaltabak/ffmpeg:latest '
             }
         }
     }
