@@ -19,7 +19,7 @@ pipeline {
                         image.push()
 
                         sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
-                        docker.image('kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag).push()
+                        docker.image('kartaltabak/ffmpeg:' + tag).push()
                     }
                 }
             }
