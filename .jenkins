@@ -14,12 +14,17 @@ pipeline {
                 script {
                     sh 'docker pull linuxserver/ffmpeg:latest'
                     docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
-                        def image = docker.build("kartaltabak/ffmpeg:latest", "docker")
+                        def repoName = "kartaltabak/ffmpeg"
+                        def taggedName = repoName + ":" + tag
+                        def image = docker.build(taggedName, "docker")
+
                         sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
+
                         image.push()
 
-                        sh 'docker tag kartaltabak/ffmpeg:latest kartaltabak/ffmpeg:' + tag
-                        docker.image('kartaltabak/ffmpeg:' + tag).push()
+                        def latestName = repoNam + ":latest"
+                        sh "docker tag" + taggedName + " " + latestName
+                        docker.image(latestName).push()
                     }
                 }
             }
