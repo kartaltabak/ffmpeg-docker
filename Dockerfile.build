@@ -28,5 +28,7 @@ RUN usermod -aG docker jenkins
 
 RUN touch /var/run/docker.sock
 
+RUN chown jenkins:docker /var/run/docker.sock
+
 USER jenkins
 
