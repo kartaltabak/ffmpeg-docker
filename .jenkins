@@ -1,3 +1,5 @@
+String cron_string = BRANCH_NAME == "master" ? "@daily" : ""
+
 pipeline {
     agent {
         dockerfile {
@@ -8,6 +10,7 @@ pipeline {
     options {
         disableConcurrentBuilds()
     }
+    triggers { cron(cron_string) }
     stages {
         stage('Pull') {
             steps {
