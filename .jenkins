@@ -23,7 +23,7 @@ pipeline {
                         image.push()
 
                         def latestName = repoName + ":latest"
-                        sh "docker tag" + taggedName + " " + latestName
+                        sh "docker tag " + taggedName + " " + latestName
                         docker.image(latestName).push()
                     }
                 }
