@@ -18,6 +18,7 @@ pipeline {
                         sh 'docker run --rm kartaltabak/ffmpeg:latest -version'
                         image.push()
                     }
+                }
             }
         }
         stage('Build') {
