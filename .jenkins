@@ -2,7 +2,9 @@
 
 dockerBuildPipeline(
         mainBranchCron: '@weekly',
-        baseImage: 'linuxserver/ffmpeg:latest',
-        registryRepoName: 'kartaltabak/ffmpeg',
-        imageTestCommand: '-version'
+        ikmageBuilder: [
+                baseImage       : 'linuxserver/ffmpeg:latest',
+                registryRepoName: 'kartaltabak/ffmpeg',
+                imageTestCommand: '-version'
+        ]
 )
