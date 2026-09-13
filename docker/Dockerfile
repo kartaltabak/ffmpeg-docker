@@ -1,4 +1,4 @@
-FROM linuxserver/ffmpeg:5.1.2
+FROM linuxserver/ffmpeg
 
 # Install mscore fonts
 RUN apt-get update && \
